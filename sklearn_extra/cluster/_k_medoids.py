@@ -233,7 +233,7 @@ class KMedoids(BaseEstimator, ClusterMixin, TransformerMixin):
                 % (self.n_clusters, X.shape[0])
             )
 
-        D = pairwise_distances(X, metric=self.metric)
+        D = pairwise_distances(X, Y, metric=self.metric)
 
         medoid_idxs = self._initialize_medoids(
             D, self.n_clusters, random_state_, X
