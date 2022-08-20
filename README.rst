@@ -1,13 +1,11 @@
 .. -*- mode: rst -*-
 
-|PyPi|_ |Azure|_ |Codecov|_ |CircleCI|_ |ReadTheDocs|_
-
-.. |PyPi| image:: https://badge.fury.io/py/scikit-learn-extra.svg
-.. _PyPi: https://badge.fury.io/py/scikit-learn-extra
 
 
-sklearn-kmedoids-string - This repo forked from scikit-learn-extra, and removed validations to make kmedoids to workd with string data for custom callable distance metric.
+sklearn-kmedoids-string
 =======================================================================
+
+This repo forked from scikit-learn-extra, and removed validations to make kmedoids to workd with string data for custom callable distance metric.
 
 .. _scikit-learn: https://scikit-learn.org
 
