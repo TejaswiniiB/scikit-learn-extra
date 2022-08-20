@@ -12,6 +12,7 @@ import numpy as np
 
 from sklearn.base import BaseEstimator, ClusterMixin, TransformerMixin
 from .custom_pairwise import pairwise_distances
+from sklearn.metrics import pairwise_distances_argmin
 
 from sklearn.utils import check_array, check_random_state
 from sklearn.utils.extmath import stable_cumsum
@@ -386,43 +387,33 @@ class KMedoids(BaseEstimator, ClusterMixin, TransformerMixin):
 
     def predict(self, X):
         """Predict the closest cluster for each sample in X.
-
         Parameters
         ----------
         X : {array-like, sparse matrix}, shape (n_query, n_features), \
                 or (n_query, n_indexed) if metric == 'precomputed'
             New data to predict.
-
         Returns
         -------
         labels : array, shape = (n_query,)
             Index of the cluster each sample belongs to.
         """
-        X = check_array(
-            X, accept_sparse=["csr", "csc"], dtype=[np.float64, np.float32]
-        )
+        import numpy as np
 
         if self.metric == "precomputed":
             check_is_fitted(self, "medoid_indices_")
             return np.argmin(X[:, self.medoid_indices_], axis=1)
         else:
             check_is_fitted(self, "cluster_centers_")
-
-            # Return data points to clusters based on which cluster assignment
-            # yields the smallest distance
-            kwargs = {}
-            if self.metric == "seuclidean":
-                kwargs["V"] = np.var(
-                    np.vstack([X, self.cluster_centers_]), axis=0, ddof=1
-                )
-            pd_argmin = pairwise_distances_argmin(
-                X,
-                Y=self.cluster_centers_,
-                metric=self.metric,
-                metric_kwargs=kwargs,
-            )
-
-            return pd_argmin
+            
+        cluster_medians = kmedoids_model.cluster_centers_
+        pred_clusters = []
+        for x in X:
+            distances = [self.metric(median, x) for median in cluster_medians]
+            distances = np.array(distances)
+            pred_cluster = np.argmin(distances)
+            pred_clusters.append(pred_cluster)
+            
+        return np.array(pred_clusters)
 
     def _initialize_medoids(self, D, n_clusters, random_state_, X=None):
         """Select initial mediods when beginning clustering."""
@@ -741,33 +732,29 @@ class CLARA(BaseEstimator, ClusterMixin, TransformerMixin):
 
     def predict(self, X):
         """Predict the closest cluster for each sample in X.
-
         Parameters
         ----------
         X : {array-like, sparse matrix}, shape (n_query, n_features), \
                 or (n_query, n_indexed) if metric == 'precomputed'
             New data to predict.
-
         Returns
         -------
         labels : array, shape = (n_query,)
             Index of the cluster each sample belongs to.
         """
-        import numpy as np
+        X = check_array(
+            X, accept_sparse=["csr", "csc"], dtype=[np.float64, np.float32]
+        )
 
         if self.metric == "precomputed":
             check_is_fitted(self, "medoid_indices_")
             return np.argmin(X[:, self.medoid_indices_], axis=1)
         else:
             check_is_fitted(self, "cluster_centers_")
-            
-        cluster_medians = kmedoids_model.cluster_centers_
-        pred_clusters = []
-        for x in X:
-            distances = [self.metric(median, x) for median in cluster_medians]
-            distances = np.array(distances)
-            pred_cluster = np.argmin(distances)
-            pred_clusters.append(pred_cluster)
-            
-        return np.array(pred_clusters)
+
+            # Return data points to clusters based on which cluster assignment
+            # yields the smallest distance
+            return pairwise_distances_argmin(
+                X, Y=self.cluster_centers_, metric=self.metric
+            )
 
