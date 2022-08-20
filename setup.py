@@ -13,7 +13,7 @@ ver_file = os.path.join("sklearn_extra", "_version.py")
 with open(ver_file) as f:
     exec(f.read())
 
-DISTNAME = "sklearn-kmedoids-str"
+DISTNAME = "sklearn-kmedoids-on-str"
 DESCRIPTION = "A set of tools for scikit-learn."
 with open("README.rst", encoding="utf-8") as f:
     LONG_DESCRIPTION = f.read()
