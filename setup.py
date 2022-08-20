@@ -13,13 +13,13 @@ ver_file = os.path.join("sklearn_extra", "_version.py")
 with open(ver_file) as f:
     exec(f.read())
 
-DISTNAME = "sklearn-kmedoids-string"
+DISTNAME = "sklearn-kmedoids-str"
 DESCRIPTION = "A set of tools for scikit-learn."
 with open("README.rst", encoding="utf-8") as f:
     LONG_DESCRIPTION = f.read()
 URL = "https://github.com/scikit-learn-contrib/scikit-learn-extra"
 LICENSE = "new BSD"
-DOWNLOAD_URL = "https://github.com/scikit-learn-contrib/scikit-learn-extra"
+DOWNLOAD_URL = "https://github.com/mln-wave/scikit-learn-extra"
 VERSION = __version__  # noqa
 INSTALL_REQUIRES = ["numpy>=1.13.3", "scipy>=0.19.1", "scikit-learn>=0.23.0"]
 CLASSIFIERS = [
