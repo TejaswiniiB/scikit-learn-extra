@@ -11,10 +11,8 @@ import warnings
 import numpy as np
 
 from sklearn.base import BaseEstimator, ClusterMixin, TransformerMixin
-from .custom_pairwise import (
-    pairwise_distances,
-    pairwise_distances_argmin,
-)
+from .custom_pairwise import pairwise_distances
+
 from sklearn.utils import check_array, check_random_state
 from sklearn.utils.extmath import stable_cumsum
 from sklearn.utils.validation import check_is_fitted
@@ -755,18 +753,21 @@ class CLARA(BaseEstimator, ClusterMixin, TransformerMixin):
         labels : array, shape = (n_query,)
             Index of the cluster each sample belongs to.
         """
-        X = check_array(
-            X, accept_sparse=["csr", "csc"], dtype=[np.float64, np.float32]
-        )
+        import numpy as np
 
         if self.metric == "precomputed":
             check_is_fitted(self, "medoid_indices_")
             return np.argmin(X[:, self.medoid_indices_], axis=1)
         else:
             check_is_fitted(self, "cluster_centers_")
+            
+        cluster_medians = kmedoids_model.cluster_centers_
+        pred_clusters = []
+        for x in X:
+            distances = [self.metric(median, x) for median in cluster_medians]
+            distances = np.array(distances)
+            pred_cluster = np.argmin(distances)
+            pred_clusters.append(pred_cluster)
+            
+        return np.array(pred_clusters)
 
-            # Return data points to clusters based on which cluster assignment
-            # yields the smallest distance
-            return pairwise_distances_argmin(
-                X, Y=self.cluster_centers_, metric=self.metric
-            )
