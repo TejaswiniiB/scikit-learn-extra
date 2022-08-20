@@ -405,7 +405,7 @@ class KMedoids(BaseEstimator, ClusterMixin, TransformerMixin):
         else:
             check_is_fitted(self, "cluster_centers_")
             
-        cluster_medians = kmedoids_model.cluster_centers_
+        cluster_medians = self.cluster_centers_
         pred_clusters = []
         for x in X:
             distances = [self.metric(median, x) for median in cluster_medians]
