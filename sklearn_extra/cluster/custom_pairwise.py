@@ -5,7 +5,19 @@ def pairwise_distances(X, Y, metric):
     # Only calculate metric for upper triangle
     out = np.zeros((X.shape[0], Y.shape[0]), dtype="float")
     iterator = itertools.combinations(range(X.shape[0]), 2)
+    print("out")
+    print(out)
     for i, j in iterator:
+        print("i, j")
+        print(i, j)
+        print("------X[i]------")
+        print(X[i])
+        print("------Y[j]------")
+        print(Y[j])
+        print("------out[i, j]------")
+        print(out[i, j])
+        print("------metric(X[i], Y[j])------")
+        print(metric(X[i], Y[j]))
         out[i, j] = metric(X[i], Y[j])
 
     # Make symmetric
