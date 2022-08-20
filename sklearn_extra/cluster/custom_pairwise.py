@@ -1,3 +1,5 @@
+import numpy as np
+
 def pairwise_distances(X, Y, metric):
     import itertools
     # Only calculate metric for upper triangle
