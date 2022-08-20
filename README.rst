@@ -5,7 +5,7 @@
 sklearn-kmedoids-string
 =======================================================================
 
-This repo forked from scikit-learn-extra, and removed validations to make kmedoids to workd with string data for custom callable distance metric.
+This repo is forked from scikit-learn-extra, and removed validations to make kmedoids to work with string data for custom callable distance metric.
 
 .. _scikit-learn: https://scikit-learn.org
 
