@@ -6,7 +6,7 @@ def pairwise_distances(X, Y, metric):
     out = np.zeros((X.shape[0], Y.shape[0]), dtype="float")
     iterator = itertools.combinations(range(X.shape[0]), 2)
     for i, j in iterator:
-        out[i, j] = metric_callable(X[i], Y[j])
+        out[i, j] = metric(X[i], Y[j])
 
     # Make symmetric
     # NB: out += out.T will produce incorrect results
