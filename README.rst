@@ -33,7 +33,7 @@ Install from PyPi with,
 
 .. code::
 
-   pip install sklearn-kmedoids-string
+   pip install sklearn-kmedoids-on-str==0.3.0.dev0
 
 
 
