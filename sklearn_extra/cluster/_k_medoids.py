@@ -11,7 +11,7 @@ import warnings
 import numpy as np
 
 from sklearn.base import BaseEstimator, ClusterMixin, TransformerMixin
-from custom_pairwise import (
+from .custom_pairwise import (
     pairwise_distances,
     pairwise_distances_argmin,
 )
